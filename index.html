@@ -88,28 +88,35 @@
 
     .hero {
       position: relative;
-      height: 100vh;
-      min-height: 620px;
+      min-height: 520px;
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: left;
-      padding: 0 60px;
-      padding-top: 90px;
+      text-align: center;
+      padding: 140px 60px 120px;
       overflow: hidden;
-      background: #222;
+      background-color: #222;
+      /* Palitan mo 'hero.jpg' sa pangalan ng picture mo para sa unang malaking image */
+      background-image: url("hero.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .hero-bg-placeholder {
       position: absolute;
       inset: 0;
-      background: #333;
-      opacity: 0.7;
+      background: rgba(0, 0, 0, 0.35);
     }
     .hero-content {
       position: relative;
-      max-width: 960px;
+      max-width: 900px;
       z-index: 1;
+    }
+    .hero-box {
+      background: rgba(0, 0, 0, 0.42);
+      padding: 38px 52px;
+      border-radius: 4px;
     }
     .hero-kicker {
       font-size: 15px;
@@ -131,7 +138,7 @@
       opacity: .92;
       margin-bottom: 30px;
     }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: center; }
     .btn-primary {
       background: #f89b34;
       color: #3b1c06;
@@ -204,64 +211,60 @@
     }
     .about-stat-main { font-weight: 600; color: var(--text-dark); }
 
-    .promo-banner {
+    /* Shared white cards (para kamukha ng picture #2) */
+    .info-card {
       display: grid;
-      grid-template-columns: minmax(0,0.9fr) minmax(0,1.5fr);
-      gap: 32px;
-      padding: 32px 40px;
-      background: #7c4b33;
-      border-radius: 24px;
-      color: #fff;
-      align-items: center;
-      box-shadow: 0 20px 55px rgba(0,0,0,0.18);
+      grid-template-columns: minmax(0,0.9fr) minmax(0,1.4fr);
+      background: #ffffff;
+      border-radius: 32px;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.12);
+      overflow: hidden;
+      align-items: stretch;
     }
-    .promo-image {
-      background: #5a3825;
-      min-height: 220px;
-      border-radius: 14px;
+    .info-image {
+      background: #555;
+      color: #eee;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 14px;
+      min-height: 260px;
     }
-    .promo-text-main { font-size: 15px; margin-bottom: 8px; }
-    .promo-strong { font-weight: 700; }
-    .promo-email { margin-top: 6px; font-weight: 600; }
-
-    .history-section {
-      background: #7c4b33;
-      border-radius: 24px;
-      padding: 26px 28px;
-      color: #fff;
-      display: grid;
-      grid-template-columns: minmax(0,1.2fr) minmax(0,1.4fr);
-      gap: 32px;
-      box-shadow: 0 20px 55px rgba(0,0,0,0.18);
+    .info-text {
+      padding: 32px 40px 36px;
+      color: #3a2b1a;
     }
-    .history-image {
-      background: #5a3825;
-      min-height: 220px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
+    .info-title {
+      font-family: "Playfair Display", serif;
+      font-size: 22px;
+      margin-bottom: 12px;
     }
-    .history-title {
-      text-align: center;
-      font-size: 17px;
+    .info-text p + p {
+      margin-top: 8px;
+    }
+    .info-strong {
+      font-weight: 700;
+      color: #d26213;
+    }
+    .info-email {
+      margin-top: 10px;
       font-weight: 600;
-      margin-bottom: 16px;
     }
-    .history-title span { font-style: italic; }
-    .history-text p + p { margin-top: 10px; }
+    .history-small-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .history-small-title span {
+      font-style: italic;
+    }
 
     @media (max-width: 1024px) {
       .navbar { padding-inline: 22px; }
       .nav-links { display: none; }
       .hero { padding-inline: 24px; }
       .section { padding-inline: 22px; }
-      .about-card, .promo-banner, .history-section {
+      .about-card, .info-card {
         grid-template-columns: minmax(0,1fr);
       }
       .about-text { padding: 28px 22px 28px; }
@@ -270,7 +273,7 @@
       .navbar { padding-inline: 16px; }
       .brand { font-size: 24px; }
       .hero { text-align: center; }
-      .hero-cta { justify-content: center; }
+      .hero-box { padding: 28px 22px; }
       .about-footer {
         flex-direction: column;
         align-items: flex-start;
@@ -298,20 +301,21 @@
 
   <section class="hero" id="home">
     <div class="hero-bg-placeholder">
-      <!-- TODO: Palitan ng CSS background-image o <img> para sa hero picture -->
     </div>
     <div class="hero-content">
-      <div class="hero-kicker">The premier gallery in the Philippines</div>
-      <h1 class="hero-title">
-        Welcome to the <span>Gallery of Paintings</span>
-      </h1>
-      <p class="hero-subtitle">
-        The premier gallery in the Philippines exclusively showcasing contemporary and classical
-        paintings from renowned artists.
-      </p>
-      <div class="hero-cta">
-        <button class="btn-primary">Explore Collections</button>
-        <span class="hero-meta">Classical &amp; contemporary works · Fine art prints</span>
+      <div class="hero-box">
+        <div class="hero-kicker">THE PREMIER GALLERY IN THE PHILIPPINES</div>
+        <h1 class="hero-title">
+          Welcome to the <span>Gallery of Paintings</span>
+        </h1>
+        <p class="hero-subtitle">
+          The premier gallery in the Philippines exclusively showcasing contemporary and classical
+          paintings from renowned artists.
+        </p>
+        <div class="hero-cta">
+          <button class="btn-primary">Explore Collections</button>
+          <span class="hero-meta">Classical &amp; contemporary works · Fine art prints</span>
+        </div>
       </div>
     </div>
   </section>
@@ -364,20 +368,20 @@
 
   <section class="section" id="publications">
     <div class="section-narrow">
-      <div class="promo-banner">
-        <div class="promo-image">
-          <!-- TODO: Palitan ng <img src="..."> para sa picture #2 (book cover) -->
+      <div class="info-card">
+        <div class="info-image">
+          <!-- TODO: Palitan ng <img src="..."> para sa picture ng book cover -->
           Add book cover here
         </div>
-        <div>
-          <p class="promo-text-main">
+        <div class="info-text">
+          <p>
             For a short period due to the Frankfurt Book Fair, we have stocks in Germany for immediate dispatch,
             free of charge postage within Germany and at book rate of EUR 15 within the EU.
           </p>
-          <p class="promo-text-main">
-            For orders at <span class="promo-strong">EUR 50 / book</span>, please email:
+          <p>
+            For orders at <span class="info-strong">EUR 50 / book</span>, please email:
           </p>
-          <p class="promo-email">gallery@gop.com.ph</p>
+          <p class="info-email">gallery@gop.com.ph</p>
         </div>
       </div>
     </div>
@@ -385,15 +389,15 @@
 
   <section class="section" id="exhibits">
     <div class="section-narrow">
-      <div class="history-section">
-        <div class="history-image">
+      <div class="info-card">
+        <div class="info-image">
           <!-- TODO: Palitan ng <img src="..."> para sa picture #3 (history display) -->
           Add history photo here
         </div>
-        <div class="history-text">
-          <h3 class="history-title">
+        <div class="info-text">
+          <div class="history-small-title">
             A Treasure Trove of Philippine History — <span>Featured in BusinessWorld</span>
-          </h3>
+          </div>
           <p>
             Step into the past at Gallery of Prints, the Philippines’ first and only gallery devoted to antique maps and prints…
           </p>
