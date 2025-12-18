@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gallery of Paintings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-beige: #e1ccaa;
+      --text-dark: #3b2a1a;
+      --accent: #e37b1c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #222;
+      background: #faf7f2;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .navbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 60px;
+      background: rgba(225,204,170,0.96);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      backdrop-filter: blur(18px);
+    }
+    .navbar-left { display: flex; align-items: center; gap: 36px; }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+    .nav-links { display: flex; gap: 22px; font-size: 15px; }
+    .nav-links a {
+      position: relative;
+      padding-bottom: 4px;
+      color: #4a3b2b;
+      transition: color .15s ease;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width .18s ease;
+    }
+    .nav-links a:hover { color: #000; }
+    .nav-links a:hover::after { width: 100%; }
+
+    .cart {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.16);
+      background: #f5e3c5;
+      cursor: pointer;
+    }
+    .cart::before { content: "🛒"; font-size: 18px; }
+    .cart-badge {
+      position: absolute;
+      top: -6px; right: -3px;
+      width: 18px; height: 18px;
+      border-radius: 999px;
+      background: #e02424;
+      color: #fff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 620px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+      padding: 0 60px;
+      padding-top: 90px;
+      overflow: hidden;
+      background: #222;
+    }
+    .hero-bg-placeholder {
+      position: absolute;
+      inset: 0;
+      background: #333;
+      opacity: 0.7;
+    }
+    .hero-content {
+      position: relative;
+      max-width: 960px;
+      z-index: 1;
+    }
+    .hero-kicker {
+      font-size: 15px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      opacity: .88;
+    }
+    .hero-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(42px,4.2vw,56px);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .hero-title span { font-style: italic; }
+    .hero-subtitle {
+      max-width: 560px;
+      font-size: 17px;
+      opacity: .92;
+      margin-bottom: 30px;
+    }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .btn-primary {
+      background: #f89b34;
+      color: #3b1c06;
+      border-radius: 999px;
+      padding: 10px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .hero-meta { font-size: 14px; opacity: .9; }
+
+    .section { padding: 80px 70px; }
+    .section-narrow { max-width: 1200px; margin: 0 auto; }
+
+    .about-card {
+      display: grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
+      background: #fff;
+      border-radius: 32px;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.16);
+      overflow: hidden;
+    }
+    .about-image {
+      position: relative;
+      min-height: 380px;
+      background: #555;
+      color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .about-text { padding: 40px 48px 46px; }
+    .about-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 13px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .about-kicker-line {
+      width: 30px; height: 2px;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+    .about-title {
+      font-family: "Playfair Display", serif;
+      font-size: 26px;
+      margin-bottom: 16px;
+      color: var(--text-dark);
+    }
+    .about-text p + p { margin-top: 12px; }
+    .about-highlight { color: #d15d00; font-weight: 600; }
+    .about-footer {
+      margin-top: 26px;
+      display: flex;
+      gap: 34px;
+      font-size: 14px;
+      align-items: center;
+    }
+    .about-stat-label {
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-size: 12px;
+      color: #777;
+    }
+    .about-stat-main { font-weight: 600; color: var(--text-dark); }
+
+    .promo-banner {
+      display: grid;
+      grid-template-columns: minmax(0,0.9fr) minmax(0,1.5fr);
+      gap: 32px;
+      padding: 32px 40px;
+      background: #7c4b33;
+      border-radius: 24px;
+      color: #fff;
+      align-items: center;
+      box-shadow: 0 20px 55px rgba(0,0,0,0.18);
+    }
+    .promo-image {
+      background: #5a3825;
+      min-height: 220px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .promo-text-main { font-size: 15px; margin-bottom: 8px; }
+    .promo-strong { font-weight: 700; }
+    .promo-email { margin-top: 6px; font-weight: 600; }
+
+    .history-section {
+      background: #7c4b33;
+      border-radius: 24px;
+      padding: 26px 28px;
+      color: #fff;
+      display: grid;
+      grid-template-columns: minmax(0,1.2fr) minmax(0,1.4fr);
+      gap: 32px;
+      box-shadow: 0 20px 55px rgba(0,0,0,0.18);
+    }
+    .history-image {
+      background: #5a3825;
+      min-height: 220px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .history-title {
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .history-title span { font-style: italic; }
+    .history-text p + p { margin-top: 10px; }
+
+    @media (max-width: 1024px) {
+      .navbar { padding-inline: 22px; }
+      .nav-links { display: none; }
+      .hero { padding-inline: 24px; }
+      .section { padding-inline: 22px; }
+      .about-card, .promo-banner, .history-section {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .about-text { padding: 28px 22px 28px; }
+    }
+    @media (max-width: 640px) {
+      .navbar { padding-inline: 16px; }
+      .brand { font-size: 24px; }
+      .hero { text-align: center; }
+      .hero-cta { justify-content: center; }
+      .about-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-left">
+      <div class="brand">Gallery of Paintings</div>
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#publications">Publications</a>
+        <a href="#shop">Shop Online</a>
+        <a href="#framing">Framing</a>
+        <a href="#exhibits">Exhibits</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+    <div class="cart"><div class="cart-badge">2</div></div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-bg-placeholder">
+      <!-- TODO: Palitan ng CSS background-image o <img> para sa hero picture -->
+    </div>
+    <div class="hero-content">
+      <div class="hero-kicker">The premier gallery in the Philippines</div>
+      <h1 class="hero-title">
+        Welcome to the <span>Gallery of Paintings</span>
+      </h1>
+      <p class="hero-subtitle">
+        The premier gallery in the Philippines exclusively showcasing contemporary and classical
+        paintings from renowned artists.
+      </p>
+      <div class="hero-cta">
+        <button class="btn-primary">Explore Collections</button>
+        <span class="hero-meta">Classical &amp; contemporary works · Fine art prints</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="section-narrow">
+      <div class="about-card">
+        <div class="about-image">
+          <!-- TODO: Palitan ng <img src="..."> para sa picture #1 -->
+          Add image here
+        </div>
+        <div class="about-text">
+          <div class="about-kicker">
+            <span class="about-kicker-line"></span>
+            <span>About the Gallery</span>
+          </div>
+          <h2 class="about-title">
+            Major cities all over the world boast of at least one art gallery specialising in antique paintings.
+          </h2>
+          <p>
+            The <span class="about-highlight">Gallery of Paintings</span> enjoys the distinction as the country's
+            <span class="about-highlight">first and only gallery</span> to permanently offer antique paintings,
+            contemporary works, and fine art prints.
+          </p>
+          <p>
+            Aside from its very large collection of <span class="about-highlight">16th century woodcuts</span>,
+            <span class="about-highlight">17th and 18th century copper engravings</span>,
+            <span class="about-highlight">19th century steel engravings</span> and lithographs, the
+            <span class="about-highlight">Gallery of Paintings</span> also offers antique maps and publications…
+          </p>
+          <p>
+            In 2015, the <span class="about-highlight">Gallery of Paintings</span> became the
+            <span class="about-highlight">first and only Philippine member</span> of the Antiquarian Booksellers
+            Association (ABA)… 
+          </p>
+          <div class="about-footer">
+            <div>
+              <div class="about-stat-main">500+ Original Works</div>
+              <div class="about-stat-label">In our collection</div>
+            </div>
+            <div>
+              <div class="about-stat-main">Weekly Exhibitions</div>
+              <div class="about-stat-label">Rotating showcases</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="publications">
+    <div class="section-narrow">
+      <div class="promo-banner">
+        <div class="promo-image">
+          <!-- TODO: Palitan ng <img src="..."> para sa picture #2 (book cover) -->
+          Add book cover here
+        </div>
+        <div>
+          <p class="promo-text-main">
+            For a short period due to the Frankfurt Book Fair, we have stocks in Germany for immediate dispatch,
+            free of charge postage within Germany and at book rate of EUR 15 within the EU.
+          </p>
+          <p class="promo-text-main">
+            For orders at <span class="promo-strong">EUR 50 / book</span>, please email:
+          </p>
+          <p class="promo-email">gallery@gop.com.ph</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="exhibits">
+    <div class="section-narrow">
+      <div class="history-section">
+        <div class="history-image">
+          <!-- TODO: Palitan ng <img src="..."> para sa picture #3 (history display) -->
+          Add history photo here
+        </div>
+        <div class="history-text">
+          <h3 class="history-title">
+            A Treasure Trove of Philippine History — <span>Featured in BusinessWorld</span>
+          </h3>
+          <p>
+            Step into the past at Gallery of Prints, the Philippines’ first and only gallery devoted to antique maps and prints…
+          </p>
+          <p>
+            Recently featured in BusinessWorld as a Filipiniana treasure trove, our Parañaque showroom houses centuries of heritage
+            carefully preserved, beautifully displayed, and proudly accessible to Filipinos.
+          </p>
+          <p>
+            Discover history you can hold. Visit the Gallery of Prints where every map tells the story of who we are.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
+
+
